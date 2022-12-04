@@ -3,13 +3,13 @@ package com.gfa.todo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
+
+    static final String filePath = "pathToFile";
 
     public static void main(String[] args) throws IOException {
 
@@ -29,7 +29,7 @@ public class Main {
 
             //PRINT OUT LIST OF TASKS
             if (args[0].equals("-l")) {
-                List<Task> myTaskList = createListFromFile("tasks3.txt");
+                List<Task> myTaskList = createListFromFile(filePath);
                 if (myTaskList.size() == 0) {
                     System.out.println("No todos for today! :)");
                 } else {
@@ -45,40 +45,42 @@ public class Main {
                     System.out.println("Unable to add: no task provided.");
                 } else {
 
-                    List<Task> myTaskList = createListFromFile("tasks3.txt");
+                    List<Task> myTaskList = createListFromFile(filePath);
                     Task addedTask = new Task(args[1]);
                     myTaskList.add(addedTask);
 
-                    writeTaskListToFile("tasks3.txt", myTaskList);
+                    writeTaskListToFile(filePath, myTaskList);
                 }
 
             }
 
             //REMOVING TASKS
             if (args[0].equals("-r")) {
-                List<Task> myTaskList = createListFromFile("tasks3.txt");
+                List<Task> myTaskList = createListFromFile(filePath);
                 if (args.length == 1) {
                     System.out.println("Unable to remove: no index provided");
                 } else {
                     int indexToRemove = 0;
                     try {
                         indexToRemove = Integer.parseInt(args[1]);
+                        if ((indexToRemove > myTaskList.size()) || (indexToRemove <= 0)) {
+
+                            System.out.println("Unable to remove: index is out of bound");
+
+                        } else {
+
+                            myTaskList.remove(indexToRemove - 1);
+                        }
+
                     } catch (Exception e) {
                         System.out.println("Unable to remove: index is not a number");
                     }
 
 
-                    if ((indexToRemove > myTaskList.size()) || (indexToRemove <= 0)) {
-                        System.out.println(myTaskList.size());
-                        System.out.println("Unable to remove: index is out of bound");
 
-                    } else {
-
-                        myTaskList.remove(indexToRemove - 1);
-                    }
                 }
 
-                writeTaskListToFile("tasks3.txt", myTaskList);
+                writeTaskListToFile(filePath, myTaskList);
             }
         }
 
