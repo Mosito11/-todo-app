@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -26,7 +25,14 @@ public class Main {
         } else {
 
             if (args[0].equals("-l")) {
-                ;
+                List<Task> myTaskList = createListFromFile("tasks3.txt");
+                if (myTaskList.size() == 0) {
+                    System.out.println("No todos for today! :)");
+                } else {
+                    for (int i = 0; i < myTaskList.size(); i++) {
+                        System.out.println(i + 1 + ". " + myTaskList.get(i).description);
+                    }
+                }
             }
 
 
@@ -48,6 +54,19 @@ public class Main {
 //            }
 //        }
 //    }
+
+    private static List<Task> createListFromFile(String pathToFile) throws IOException {
+
+        Path path = Path.of(pathToFile);
+        List<String> lines = Files.readAllLines(path);
+        List<Task> toDoList = new ArrayList<>();
+
+        for (int i = 0; i < lines.size(); i++) {
+            Task task = new Task(lines.get(i));
+            toDoList.add(task);
+        }
+        return toDoList;
+    }
 
 
 }
