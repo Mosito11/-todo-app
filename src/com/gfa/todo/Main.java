@@ -45,10 +45,11 @@ public class Main {
                     System.out.println("Unable to add: no task provided.");
                 } else {
 
-
+                    List<Task> myTaskList = createListFromFile("tasks3.txt");
                     Task addedTask = new Task(args[1]);
+                    myTaskList.add(addedTask);
 
-                    addTaskToFile("tasks3.txt", addedTask);
+                    writeTaskListToFile("tasks3.txt", myTaskList);
                 }
 
             }
@@ -56,11 +57,25 @@ public class Main {
             //REMOVING TASKS
             if (args[0].equals("-r")) {
                 List<Task> myTaskList = createListFromFile("tasks3.txt");
-                if (myTaskList.size() == 0) {
-                    System.out.println("No todos for today! :)");
+                if (args.length == 1) {
+                    System.out.println("Unable to remove: no index provided");
                 } else {
-                    int indexToRemove = Integer.parseInt(args[1]);
-                    myTaskList.remove(indexToRemove - 1);
+                    int indexToRemove = 0;
+                    try {
+                        indexToRemove = Integer.parseInt(args[1]);
+                    } catch (Exception e) {
+                        System.out.println("Unable to remove: index is not a number");
+                    }
+
+
+                    if ((indexToRemove > myTaskList.size()) || (indexToRemove <= 0)) {
+                        System.out.println(myTaskList.size());
+                        System.out.println("Unable to remove: index is out of bound");
+
+                    } else {
+
+                        myTaskList.remove(indexToRemove - 1);
+                    }
                 }
 
                 writeTaskListToFile("tasks3.txt", myTaskList);
