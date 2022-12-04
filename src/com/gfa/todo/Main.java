@@ -52,8 +52,24 @@ public class Main {
                 }
 
             }
+
+            //REMOVING TASKS
+            if (args[0].equals("-r")) {
+                List<Task> myTaskList = createListFromFile("tasks3.txt");
+                if (myTaskList.size() == 0) {
+                    System.out.println("No todos for today! :)");
+                } else {
+                    int indexToRemove = Integer.parseInt(args[1]);
+                    myTaskList.remove(indexToRemove - 1);
+                }
+
+                writeTaskListToFile("tasks3.txt", myTaskList);
+            }
         }
+
+
     }
+
 
 //    public static void printListOfTasks() throws IOException {
 //
@@ -87,6 +103,18 @@ public class Main {
 
         Path path = Path.of(pathToFile);
         Files.writeString(path, "\n" + task.description, StandardOpenOption.APPEND);
+
+    }
+
+    private static void writeTaskListToFile(String pathToFile, List<Task> task) throws IOException {
+
+        Path path = Path.of(pathToFile);
+        List<String> listOfDescriptions = new ArrayList<>();
+        for (Task task1 : task) {
+            listOfDescriptions.add(task1.description);
+        }
+
+        Files.write(path, listOfDescriptions);
 
     }
 
