@@ -3,9 +3,12 @@ package com.gfa.todo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -24,6 +27,7 @@ public class Main {
             System.out.println();
         } else {
 
+            //PRINT OUT LIST OF TASKS
             if (args[0].equals("-l")) {
                 List<Task> myTaskList = createListFromFile("tasks3.txt");
                 if (myTaskList.size() == 0) {
@@ -35,10 +39,21 @@ public class Main {
                 }
             }
 
+            //ADDING TASK
+            if (args[0].equals("-a")) {
+                if (args.length == 1) {
+                    System.out.println("Unable to add: no task provided.");
+                } else {
 
+
+                    Task addedTask = new Task(args[1]);
+
+                    addTaskToFile("tasks3.txt", addedTask);
+                }
+
+            }
         }
     }
-
 
 //    public static void printListOfTasks() throws IOException {
 //
@@ -68,5 +83,11 @@ public class Main {
         return toDoList;
     }
 
+    private static void addTaskToFile(String pathToFile, Task task) throws IOException {
+
+        Path path = Path.of(pathToFile);
+        Files.writeString(path, "\n" + task.description, StandardOpenOption.APPEND);
+
+    }
 
 }
